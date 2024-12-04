@@ -55,14 +55,16 @@ export default function Home() {
           </div>
         ) : (
           <div className="bg-slate-800 rounded-xl p-4 text-white">
-            <div className="flex justify-center text-xl">
-              Secret Mneumonics
-            </div>
-            <div>
-              {
-                !showMneumonics ? <Button text="Show" onClick={() => { setShowMnemonics(true) }}></Button> :
-                  <Button text="Hide" onClick={() => { setShowMnemonics(false) }}></Button>
-              }
+            <div className="flex items-center gap-2" >
+              <div className="flex justify-center text-xl">
+                Secret Mneumonics
+              </div>
+              <div className="flex justify-center">
+                {
+                  !showMneumonics ? <button className="bg-slate-700 h-max w-max text-white rounded-lg p-2" onClick={() => { setShowMnemonics(true) }}>Show</button> :
+                    <button className="bg-slate-700 h-max w-max text-white rounded-lg p-2" onClick={() => { setShowMnemonics(false) }}>Hide</button>
+                }
+              </div>
             </div>
             {
               showMneumonics && <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 m-2" onClick={() => {
@@ -78,11 +80,14 @@ export default function Home() {
                 </div>
               </div>
             }
-
           </div>
         )}
       </div>
-      <footer className="text-white text-xl m-4">Created by Raghav 🚀</footer>
+      <footer className="flex items-center justify-center m-2">
+        <div className="text-xl text-white">
+        Created by Raghav 🚀
+        </div>
+      </footer>
     </div>
   );
 }
