@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "./components/Button";
 import { generateMnemonic, mnemonicToSeedSync } from "bip39";
 import { Keypair } from "@solana/web3.js";
@@ -16,14 +16,30 @@ export default function Home() {
   const [seed, setSeed] = useState<Buffer>();
   const [count, setCount] = useState<number>(0);
 
+  const loadOrGenerateMnemonic = async () => {
+    const storedMnemonic =
+      walletType === "Solana"
+        ? localStorage.getItem("solanaMnemonic")
+        : localStorage.getItem("ethMnemonic");
+
+    if (storedMnemonic) {
+      setmneumonics(storedMnemonic.split(" "));
+      setSeed(mnemonicToSeedSync(storedMnemonic));
+    } else {
+      // generateMnemonics();
+    }
+  };
+
   const generateMnemonics = async () => {
     const mn = generateMnemonic();
     setmneumonics(mn.split(" "));
     setSeed(mnemonicToSeedSync(mn));
+    localStorage.setItem(walletType === "Solana" ? "solanaMnemonic" : "ethMnemonic", mn);
   };
 
   const createWallet = () => {
-    const path = `m/44'/501'/${count}'/0'`;
+    const path =
+      walletType === "Solana" ? `m/44'/501'/${count}'/0'` : `m/44'/60'/${count}'/0'`;
     let derivedSeed;
     if (seed) derivedSeed = derivePath(path, seed.toString("hex")).key;
     let secret;
@@ -51,6 +67,12 @@ export default function Home() {
         console.error("Failed to copy text: ", err);
       });
   };
+
+  useEffect(() => {
+    if (walletType) {
+      loadOrGenerateMnemonic();
+    }
+  }, [walletType]);
 
   return (
     <div className="bg-slate-900 min-h-screen flex flex-col">
