@@ -1,17 +1,18 @@
-import React from "react"
-
 interface ButtonProps {
-    text: string,
-    onClick: () => void
+    text: string;
+    onClick: () => void;
+    color?: string;
+    textColor?: string;
 }
-const Button: React.FC<ButtonProps> = ({ text, onClick }) => {
+
+const Button: React.FC<ButtonProps> = ({ text, onClick, color = "bg-slate-700"  , textColor = "text-white"}) => {
     return (
-        <div className="bg-slate-800 h-max w-max text-white rounded-lg p-2">
+        <div className={`h-max w-max text-white rounded-lg p-2 ${color} ${textColor}`}>
             <button onClick={onClick}>
                 {text}
             </button>
         </div>
-    )
-}
+    );
+};
 
-export default Button
+export default Button;
